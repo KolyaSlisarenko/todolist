@@ -1,0 +1,78 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <style>
+    li:nth-child(2n) {
+      background: #3e8ed014;
+    }
+
+    i:hover {
+      cursor: pointer;
+    }
+
+    .tooltip-container {
+      position: absolute;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    li:hover {
+      cursor: pointer;
+    }
+
+    ul {
+      min-height: 10rem;
+    }
+  </style>
+</head>
+<body style="color: black; background: white" class="class-a class-b class-c">
+<div class="container">
+  <div id="test">
+
+  </div>
+  <div class="mt-5 columns">
+    <div class="field is-grouped pr-10">
+      <p class="control is-expanded">
+        <input id='new-item-text' class="input" type="text" placeholder="Add new item">
+      </p>
+      <p class="control">
+        <button id='add-item' class="button is-info">
+          Add
+        </button>
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-5 columns">
+    <div class="column is-one-quarter">
+      <h2>New tasks:</h2>
+      <ul id='list'></ul>
+    </div>
+    <div class="column is-one-quarter is-offset-one-quarter">
+      <h2>Completed tasks:</h2>
+      <ul id='completed-list'></ul>
+    </div>
+  </div>
+</div>
+
+<script id='control-buttons' type="text/html">
+<span class="is-pulled-right">
+    <i class="fas fa-arrow-up ml-2" data-tooltip='Move up'></i>
+    <i class="fas fa-arrow-down ml-2" data-tooltip='Move down'></i>
+    <i class="delete-btn ml-2 is-size-3 fas fa-trash has-text-danger" data-tooltip='Delete'></i>
+  </span>
+</script>
+
+<script id="tooltip" type="text/html">
+<span class="p-2 is-size-5 has-background-light"></span>
+</script>
+
+<script src="tooltip.js"></script>
+<script src="dragndrop.js"></script>
+<script src="todo.js"></script>
+</body>
+</html>
