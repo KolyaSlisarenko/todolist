@@ -21,10 +21,10 @@ class DragAndDrop {
       this.onDragStart(event);
     };
 
-    this.element.addEventListener('mousemove', onDragStart);
+    document.addEventListener('mousemove', onDragStart);
 
-    this.element.addEventListener('mouseup', (event) => {
-      this.element.removeEventListener('mousemove', onDragStart);
+    document.addEventListener('mouseup', (event) => {
+      document.removeEventListener('mousemove', onDragStart);
       this.onDragFinish(event);
     }, { once: true });
   }
