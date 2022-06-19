@@ -12,6 +12,7 @@ class DragAndDrop {
     if (event.target.tagName.toLowerCase() !== 'li') {
       return false;
     }
+
     this.shiftX = event.clientX - this.element.getBoundingClientRect().left;
     this.shiftY = event.clientY - this.element.getBoundingClientRect().top;
 

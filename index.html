@@ -4,6 +4,12 @@
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
   <style>
+    #completed-list {
+      min-height: 50%;
+      width: 100%;
+      background: rgb(147 137 137 / 10%)
+    }
+
     li:nth-child(2n) {
       background: #3e8ed014;
     }
@@ -43,16 +49,19 @@
         <button id='add-item' class="button is-info">
           Add
         </button>
+        <button id='load-item' class="button">
+          Load random task
+        </button>
       </p>
     </div>
   </div>
 
   <div class="mt-5 columns">
-    <div class="column is-one-quarter">
+    <div class="column">
       <h2>New tasks:</h2>
       <ul id='list'></ul>
     </div>
-    <div class="column is-one-quarter is-offset-one-quarter">
+    <div class="column is-offset-one-quarter">
       <h2>Completed tasks:</h2>
       <ul id='completed-list'></ul>
     </div>
@@ -63,7 +72,7 @@
 <span class="is-pulled-right">
     <i class="fas fa-arrow-up ml-2" data-tooltip='Move up'></i>
     <i class="fas fa-arrow-down ml-2" data-tooltip='Move down'></i>
-    <i class="delete-btn ml-2 is-size-3 fas fa-trash has-text-danger" data-tooltip='Delete'></i>
+    <i class="delete-btn ml-2 fas fa-trash has-text-danger" data-tooltip='Delete'></i>
   </span>
 </script>
 

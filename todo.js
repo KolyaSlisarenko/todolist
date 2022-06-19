@@ -1,15 +1,33 @@
 class TodoManager {
+  controlButtons = {
+    addItem: document.getElementById('add-item'),
+    loadItem: document.getElementById('load-item')
+  };
+
   init () {
-    document.getElementById('add-item').addEventListener('click', this.addNewItem.bind(this));
+    this.controlButtons.addItem.addEventListener('click', this.addNewItem.bind(this));
+    this.controlButtons.loadItem.addEventListener('click', this.loadRandomItem.bind(this));
   }
 
   addNewItem () {
+    this.addItem(this.getNewItemText());
+  }
+
+  async loadRandomItem () {
+    this.controlButtons.loadItem.disabled = true;
+    const response = await fetch('todo.json');
+    const result = await response.json();
+    this.controlButtons.loadItem.disabled = false;
+
+    this.addItem(result.data[Math.floor(Math.random() * result.data.length)]);
+  }
+
+  addItem (text) {
     try {
-      let newItemText = this.getNewItemText();
       const listItem = document.createElement('li');
 
-      listItem.className = 'is-size-3 p-2';
-      listItem.innerHTML += newItemText + document.getElementById('control-buttons').innerHTML;
+      listItem.className = 'p-2';
+      listItem.innerHTML += text + document.getElementById('control-buttons').innerHTML;
 
       document.getElementById('list').append(listItem);
       document.getElementById('new-item-text').value = '';
@@ -24,12 +42,14 @@ class TodoManager {
     element.querySelector('.fa-arrow-up').addEventListener('click', this.moveUp.bind(this, element));
     element.querySelector('.fa-arrow-down').addEventListener('click', this.moveDown.bind(this, element));
     element.querySelector('.delete-btn').addEventListener('click', this.delete.bind(this, element));
-    
-    (new Tooltip(element)).init();
+
     (new DragAndDrop(element)).init();
+    const tooltip = new Tooltip(element);
+    tooltip.init();
+    element.addEventListener('remove-item', tooltip.removeTooltip);
   }
 
-  moveUp (element, event) {
+  moveUp (element) {
     if (element.previousElementSibling) {
       element.previousElementSibling.before(element);
     }
@@ -43,6 +63,7 @@ class TodoManager {
 
   delete (element) {
     element.remove();
+    element.dispatchEvent(new Event('remove-item'));
   }
 
   getNewItemText () {
@@ -51,6 +72,7 @@ class TodoManager {
     if (!newItemText) {
       throw new Error('Todo list item name is required!');
     }
+
     return newItemText;
   }
 

@@ -11,12 +11,13 @@ class Tooltip {
   hoverTooltip (event) {
     this.removeTooltip();
     let tooltipText = event.target.dataset.tooltip;
+
     if (tooltipText === undefined) {
       return;
     }
 
     let tooltipElement = document.createElement('span');
-    tooltipElement.className = 'p-2 is-size-5 has-background-light tooltip-container';
+    tooltipElement.className = 'p-2 has-background-light tooltip-container';
     let coordinates = event.target.getBoundingClientRect();
 
     Object.assign(tooltipElement.style, {
@@ -27,7 +28,7 @@ class Tooltip {
     document.body.append(tooltipElement);
   }
 
-  removeTooltip (event) {
+  removeTooltip () {
     document.body.querySelectorAll('.tooltip-container').forEach((item) => item.remove());
   }
 }
