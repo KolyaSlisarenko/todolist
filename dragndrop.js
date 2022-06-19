@@ -9,7 +9,7 @@ class DragAndDrop {
   }
 
   onDragInit (event) {
-    if (event.target.tagName.toLowerCase() !== 'li') {
+    if (event.target.tagName.toLowerCase() !== 'li' || event.which !== 1) {
       return false;
     }
 
@@ -52,6 +52,8 @@ class DragAndDrop {
     this.element.style.top = null;
     this.element.style.position = null;
     this.element.style.cursor = null;
+    this.element.style.width = null;
+    this.element.style.height = null;
 
     let elemBelow = document.elementFromPoint(event.pageX, event.pageY);
     const tagName = elemBelow.tagName.toLowerCase();
