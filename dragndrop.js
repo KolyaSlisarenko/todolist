@@ -5,7 +5,6 @@ class DragAndDrop {
 
   init () {
     this.element.addEventListener('mousedown', this.onDragInit.bind(this));
-    this.element.addEventListener('dragstart', () => {return false;});
   }
 
   onDragInit (event) {
