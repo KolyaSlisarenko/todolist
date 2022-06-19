@@ -10,32 +10,37 @@ class TodoManager {
   }
 
   addNewItem () {
-    this.addItem(this.getNewItemText());
+    try {
+      this.addItem(this.getNewItemText());
+    } catch (e) {
+      return this.showError(e);
+    }
   }
 
   async loadRandomItem () {
     this.controlButtons.loadItem.disabled = true;
-    const response = await fetch('todo.json');
-    const result = await response.json();
-    this.controlButtons.loadItem.disabled = false;
 
-    this.addItem(result.data[Math.floor(Math.random() * result.data.length)]);
+    try {
+      const response = await fetch('todo.json');
+      const result = await response.json();
+      this.addItem(result.data[Math.floor(Math.random() * result.data.length)]);
+    } catch (e) {
+      this.showError(e);
+    }
+
+    this.controlButtons.loadItem.disabled = false;
   }
 
   addItem (text) {
-    try {
-      const listItem = document.createElement('li');
+    const listItem = document.createElement('li');
 
-      listItem.className = 'p-2';
-      listItem.innerHTML += text + document.getElementById('control-buttons').innerHTML;
+    listItem.className = 'p-2';
+    listItem.innerHTML += text + document.getElementById('control-buttons').innerHTML;
 
-      document.getElementById('list').append(listItem);
-      document.getElementById('new-item-text').value = '';
+    document.getElementById('list').append(listItem);
+    document.getElementById('new-item-text').value = '';
 
-      this.initNewItem(listItem);
-    } catch (e) {
-      return this.showError(e);
-    }
+    this.initNewItem(listItem);
   }
 
   initNewItem (element) {
@@ -81,7 +86,7 @@ class TodoManager {
       className: 'notification is-danger',
       innerText: message
     });
-    document.querySelector('.field').before(error);
+    document.getElementById('messages').append(error);
 
     setTimeout(() => {
       error.remove();
