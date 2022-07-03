@@ -73,11 +73,11 @@
   <div class="mt-5 columns">
     <div class="column">
       <h2>New tasks:</h2>
-      <ul id='list'></ul>
+      <ul id='list' class="dragtarget droptarget"></ul>
     </div>
     <div class="column is-offset-one-quarter">
       <h2>Completed tasks:</h2>
-      <ul id='completed-list'></ul>
+      <ul id='completed-list' class="dragtarget droptarget"></ul>
     </div>
   </div>
 
@@ -86,9 +86,10 @@
 
 <script id='control-buttons' type="text/html">
 <span class="is-pulled-right">
-    <i class="fas fa-arrow-up ml-2" data-tooltip='Move up'></i>
-    <i class="fas fa-arrow-down ml-2" data-tooltip='Move down'></i>
-    <i class="delete-btn ml-2 fas fa-trash has-text-danger" data-tooltip='Delete'></i>
+    <i class="action-button fas fa-arrow-up ml-2" data-action='move-up' data-tooltip='Move up'></i>
+    <i class="action-button fas fa-arrow-down ml-2" data-action='move-down' data-tooltip='Move down'></i>
+    <i class="action-button delete-btn ml-2 fas fa-trash has-text-danger" data-action='delete'
+       data-tooltip='Delete'></i>
   </span>
 </script>
 
@@ -96,6 +97,8 @@
 <span class="p-2 is-size-5 has-background-light"></span>
 </script>
 
+<script src="eventObserver.js"></script>
+<script src="controlButtons.js"></script>
 <script src="tooltip.js"></script>
 <script src="dragndrop.js"></script>
 <script src="todo.js"></script>

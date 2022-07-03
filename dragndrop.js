@@ -1,69 +1,52 @@
 class DragAndDrop {
-  constructor (element) {
-    this.element = element;
+  options = {
+    dragTargetClassName: 'dragtarget',
+    dropTargetClassName: 'droptarget',
+  };
+
+  element = null;
+
+  constructor (options) {
+    this.options = { ...this.options, ...options };
+    this.init();
   }
 
   init () {
-    this.element.addEventListener('mousedown', this.onDragInit.bind(this));
+    this.initTargets();
   }
 
-  onDragInit (event) {
-    if (event.target.tagName.toLowerCase() !== 'li' || event.which !== 1) {
-      return false;
-    }
+  initTargets () {
+    Array.from(document.getElementsByClassName(this.options.dragTargetClassName)).forEach(dragTarget => {
+      dragTarget.addEventListener('dragstart', this.onDragStart.bind(this));
+    });
 
-    this.shiftX = event.clientX - this.element.getBoundingClientRect().left;
-    this.shiftY = event.clientY - this.element.getBoundingClientRect().top;
-
-    this.setStyles();
-    const onDragStart = (event) => {
-      this.onDragStart(event);
-    };
-
-    document.addEventListener('mousemove', onDragStart);
-
-    document.addEventListener('mouseup', (event) => {
-      document.removeEventListener('mousemove', onDragStart);
-      this.onDragFinish(event);
-    }, { once: true });
-  }
-
-  setStyles () {
-    const styles = getComputedStyle(this.element);
-
-    this.element.style.width = styles.width;
-    this.element.style.height = styles.height;
-    this.element.style.cursor = 'grabbing';
-    this.element.style.position = 'fixed';
+    Array.from(document.getElementsByClassName(this.options.dropTargetClassName)).forEach(dragTarget => {
+      dragTarget.addEventListener('dragover', this.onDragOver.bind(this));
+      dragTarget.addEventListener('drop', this.onDrop.bind(this));
+    });
   }
 
   onDragStart (event) {
-    const left = event.clientX - this.shiftX + 'px';
-    const top = event.clientY - this.shiftY + 'px';
-
-    this.element.style.left = left;
-    this.element.style.top = top;
+    this.element = event.target;
   }
 
-  onDragFinish (event) {
-    this.element.hidden = true;
-    this.element.style.left = null;
-    this.element.style.top = null;
-    this.element.style.position = null;
-    this.element.style.cursor = null;
-    this.element.style.width = null;
-    this.element.style.height = null;
+  onDragOver (event) {
+    event.preventDefault();
+  }
+
+  onDrop (event) {
+    const dropTarget = event.target.closest('.' + this.options.dropTargetClassName);
+
+    if (!dropTarget) {
+      throw new Error('Drop target is not found');
+    }
 
     let elemBelow = document.elementFromPoint(event.pageX, event.pageY);
-    const tagName = elemBelow.tagName.toLowerCase();
 
-    if (['ul', 'li'].includes(tagName)) {
-      if (tagName === 'ul') {
-        elemBelow.append(this.element);
-      } else {
-        elemBelow.after(this.element);
-      }
+    if (elemBelow.draggable) {
+      elemBelow.after(this.element);
+    } else {
+      dropTarget.append(this.element);
     }
-    this.element.hidden = false;
   }
 }

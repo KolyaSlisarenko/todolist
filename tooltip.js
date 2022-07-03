@@ -1,34 +1,49 @@
 class Tooltip {
-  constructor (element) {
-    this.element = element;
+  tooltip = null;
+
+  constructor () {
+    this.init();
   }
 
   init () {
-    this.element.addEventListener('mouseover', this.hoverTooltip.bind(this));
-    this.element.addEventListener('mouseleave', this.removeTooltip.bind(this));
+    this.createElement();
+    document.body.addEventListener('mouseover', this.hoverTooltip.bind(this));
+    document.body.addEventListener('mouseover', this.removeTooltip.bind(this));
+    EventObserver.getInstance().subscribe('remove-item', this.removeTooltip);
+  }
+
+  createElement () {
+    this.tooltip = document.createElement('span');
+    this.tooltip.className = 'p-2 has-background-light tooltip-container';
+    document.body.append(this.tooltip);
   }
 
   hoverTooltip (event) {
-    this.removeTooltip();
-    let tooltipText = event.target.dataset.tooltip;
+    let tooltipText = this.getTooltipText(event);
 
-    if (tooltipText === undefined) {
+    if (!tooltipText) {
       return;
     }
 
-    let tooltipElement = document.createElement('span');
-    tooltipElement.className = 'p-2 has-background-light tooltip-container';
     let coordinates = event.target.getBoundingClientRect();
 
-    Object.assign(tooltipElement.style, {
+    Object.assign(this.tooltip.style, {
       top: coordinates.top - 50,
       left: coordinates.left
     });
-    tooltipElement.innerText = tooltipText;
-    document.body.append(tooltipElement);
+    this.tooltip.innerText = tooltipText;
+    this.tooltip.hidden = false;
   }
 
-  removeTooltip () {
-    document.body.querySelectorAll('.tooltip-container').forEach((item) => item.remove());
+  removeTooltip (event) {
+    if (this.getTooltipText(event)) {
+      return;
+    }
+
+    this.tooltip.hidden = true;
+  }
+
+  getTooltipText (event) {
+    return event.target.dataset.tooltip;
   }
 }

@@ -5,8 +5,20 @@ class TodoManager {
   };
 
   init () {
+    this.initControls();
+    this.initServices();
+  }
+
+  initControls () {
     this.controlButtons.addItem.addEventListener('click', this.addNewItem.bind(this));
     this.controlButtons.loadItem.addEventListener('click', this.loadRandomItem.bind(this));
+  }
+
+  initServices () {
+    new EventObserver();
+    new DragAndDrop();
+    new ControlButtons();
+    new Tooltip();
   }
 
   addNewItem () {
@@ -34,41 +46,12 @@ class TodoManager {
   addItem (text) {
     const listItem = document.createElement('li');
 
-    listItem.className = 'p-2';
+    listItem.className = 'p-2 control-item';
     listItem.innerHTML += text + document.getElementById('control-buttons').innerHTML;
+    listItem.draggable = true;
 
     document.getElementById('list').append(listItem);
     document.getElementById('new-item-text').value = '';
-
-    this.initNewItem(listItem);
-  }
-
-  initNewItem (element) {
-    element.querySelector('.fa-arrow-up').addEventListener('click', this.moveUp.bind(this, element));
-    element.querySelector('.fa-arrow-down').addEventListener('click', this.moveDown.bind(this, element));
-    element.querySelector('.delete-btn').addEventListener('click', this.delete.bind(this, element));
-
-    (new DragAndDrop(element)).init();
-    const tooltip = new Tooltip(element);
-    tooltip.init();
-    element.addEventListener('remove-item', tooltip.removeTooltip);
-  }
-
-  moveUp (element) {
-    if (element.previousElementSibling) {
-      element.previousElementSibling.before(element);
-    }
-  }
-
-  moveDown (element) {
-    if (element.nextElementSibling) {
-      element.nextElementSibling.after(element);
-    }
-  }
-
-  delete (element) {
-    element.remove();
-    element.dispatchEvent(new Event('remove-item'));
   }
 
   getNewItemText () {
